@@ -15,11 +15,11 @@ namespace CrackingTheCodingInterview
         {
             var keyCounter = new Dictionary<char, bool>();
 
-            for(int i = 0; i < testString.Length; i++)
+            for (int i = 0; i < testString.Length; i++)
             {
                 char charToTest = testString[i];
-                
-                if(keyCounter.ContainsKey(charToTest)) return false; 
+
+                if (keyCounter.ContainsKey(charToTest)) return false;
                 else keyCounter.Add(charToTest, true);
             }
 
@@ -29,11 +29,11 @@ namespace CrackingTheCodingInterview
         // 1b. What if you cannot use additional data structures?
         public static bool isAllUniqueNoDS(string testString)
         {
-            for(int i = 0; i < testString.Length;i++)
+            for (int i = 0; i < testString.Length; i++)
             {
-                for(int y = i + 1; y < testString.Length; y++) // loop through the remainder of the string
+                for (int y = i + 1; y < testString.Length; y++) // loop through the remainder of the string
                 {
-                    if(testString[y] == testString[i]) return false;
+                    if (testString[y] == testString[i]) return false;
                 }
             }
 
@@ -48,7 +48,7 @@ namespace CrackingTheCodingInterview
 
             char[] newStr = str.ToCharArray(); // Better to pre-define entire string length to avoid recreating string each iteration.
             int y = 0;
-            for (int i = str.Length-1; i >= 0; i--)
+            for (int i = str.Length - 1; i >= 0; i--)
             {
                 newStr[y] = str[i];
                 y++;
@@ -72,10 +72,10 @@ namespace CrackingTheCodingInterview
 
                 if (keyCounterStr2.ContainsKey(str2[i])) keyCounterStr2[str2[i]]++;
                 else keyCounterStr2.Add(str2[i], 1); // Code Smell - duplicated code. Could probably put this into a seperate method... but given how small it is I'll leave it as it is for now.
-            }
+            } // Another way to implement this would be to use a single Dict and ++ for str1 characters and -- for str2 characters. All keys should then == 0.
 
             // Check dictionarys are equal given that we know str1 & str2 are the same length.
-            foreach(var key in keyCounterStr1.Keys)
+            foreach (var key in keyCounterStr1.Keys)
             {
                 if (keyCounterStr1[key] != keyCounterStr2[key]) return false;
             }
@@ -134,6 +134,7 @@ namespace CrackingTheCodingInterview
 
             newStr.Append(curChar.ToString() + charCount.ToString()); // Make sure to get final char!
 
+            // Ideally, the following line would be at the start of the function, to pre-calculate the compressed length to avoid having to calculate the compressed string entirely.
             if (newStr.ToString().Length >= str.Length) return str; // If it's not any shorter...
             else return newStr.ToString();
         }
@@ -147,7 +148,7 @@ namespace CrackingTheCodingInterview
             // We will assume we will be rotating clockwise
 
             int n = image.GetLength(0); // NxN matrix
-            
+
             int[,] result = new int[n, n];
 
             for (int x = 0; x < n; x++)
@@ -165,5 +166,149 @@ namespace CrackingTheCodingInterview
 
 
         // 6b. Can you do this in-place?
+        public static int[,] rotateImageInPlace(int[,] image) // 4-byte pixel is int data-type
+        {
+            // We will assume we will be rotating clockwise
+            int n = image.GetLength(0); // NxN matrix
+
+            // Step 1 - Transpose matrix
+            for (int x = 0; x < n; x++)
+            {
+                for (int y = x; y < n; y++)
+                {
+                    if (x == y) continue; // if middle diagonal - skip
+
+                    int temp = image[x, y];
+                    image[x, y] = image[y, x];
+                    image[y, x] = temp;
+                }
+            }
+
+
+            // Step 2 - Flip Horizontally
+            for (int y = 0; y < n; y++) // for each row (Y Cood)
+            {
+                int rowEnd = n - 1;
+                for (int rowStart = 0; rowStart < rowEnd; rowStart++)
+                { // for each element in row (x cood)
+                    int temp = image[rowStart, y];
+                    image[rowStart, y] = image[rowEnd, y];
+                    image[rowEnd, y] = temp;
+                    rowEnd--;
+                }
+
+            }
+            return image;
+        }
+
+        // 7. Write an algorithm such that if an element in an MxN matrix is 0, its entire row and column are set to 0.
+        public static int[,] zeroExpands(int[,] matrix)
+        {
+            // Where are the 0's located?
+            var xList = new List<int>();
+            var yList = new List<int>();
+
+            int xn = matrix.GetLength(0); // Total x coordinates
+            int yn = matrix.GetLength(1); // Total y coordinates
+
+            // Find the x & y coods of the 0's
+            for (int x = 0; x < xn; x++)
+            {
+                for (int y = 0; y < yn; y++)
+                {
+                    if (matrix[x, y] == 0)
+                    {
+                        xList.Add(x);
+                        yList.Add(y);
+                    }
+                }
+            }
+
+            // Block out all the 0's for X coods
+            foreach (int x in xList)
+            {
+                for (int y = 0; y < yn; y++)
+                {
+                    matrix[x, y] = 0;
+                }
+            }
+
+            // Block out of the 0's for Y Coods
+            foreach (int y in yList)
+            {
+                for (int x = 0; x < xn; x++)
+                {
+                    matrix[x, y] = 0;
+                }
+            }
+
+            return matrix;
+        }
+
+        /* 
+         * 8. Assume you have a method isSubstring which checks if one word is a substring of another. Given two strings, s1 and s2, write code
+         * to check if s2 is a rotation of s1 using only one call to isSubstring (eg. "waterbottle" is a rotation of "erbottlewat")
+         */
+
+        // Will write the isSubstring function first
+        private static bool isSubString(string s1, string s2)
+        {
+            return s1.Contains(s2);
+        }
+
+        public static bool isRotation1stAttempt(string s1, string s2)
+        {
+            if (s1.Length != s2.Length) return false;
+            if (s1.Length == 0) return true;
+
+            char s1First = s1[0];
+
+            for(int i = 0; i < s2.Length; i++)
+            {
+                if(s1First == s2[i]) { // Found it!
+                    int half2Length = s2.Length - i;
+                    if(s1.Substring(0, half2Length) == s2.Substring(i)) // The 2nd half of s2 matches s1
+                    {
+                        if (isSubString(s1, s2.Substring(0, s2.Length - half2Length))) return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+        // Problem with this is that isSubString could be called multiple times in some cases.
+        // It's also possible to form a string that would pass this check but not be a rotation, so not an ideal solution at all!
+        // It would be better in this case NOT to use isSubstring and instead to calculate the exact substring location within s1 directly to do an isEqual comparison.
+        // The isSubstring line would look like this instead:
+        // if (s1.Substring(half2Length) == s2.Substring(0, s2.Length - half2Length)) return true;
+
+
+        /*
+         * The 2nd attempt is so simple... and I'll be transparant and admit I did google this one!
+         * Makes me want to kick myself that I didn't spot this!!
+         * 
+         * In the example of:
+         * 
+         * s1 = "waterbottle"
+         * s2 = "erbottlewat"
+         * 
+         * Let x = "wat" and y = "erbottle"
+         * 
+         * Then:
+         * 
+         * s1 = xy & s2 = yx
+         * 
+         * Therefore:
+         * 
+         * s1s1 = xyxy which s2 (yx) is a substring of.
+         */
+        public static bool isRotation2ndAttempt(string s1, string s2)
+        {
+            if (s1.Length != s2.Length) return false;
+            if (s1.Length == 0) return true;
+
+            string s1s1 = s1 + s1;
+            return isSubString(s1s1, s2);
+        }
     }
 }

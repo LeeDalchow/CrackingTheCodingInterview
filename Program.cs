@@ -43,7 +43,44 @@ print2DArray(matrixResult);
 
 
 Console.WriteLine("Question 6b");
+int[,] NineBy9Array = fill2DArray(new int[9, 9]);
+Console.WriteLine("Original Matrix:");
+print2DArray(NineBy9Array);
+matrixResult = ArraysAndStrings.rotateImageInPlace(NineBy9Array);
+Console.WriteLine("Rotated clockwise by 90 degrees:");
+print2DArray(matrixResult);
 
+Console.WriteLine("Question 7");
+int[,] TenBy15Array = fill2DArray(new int[10, 15]);
+// Set some random 0's
+TenBy15Array[5, 7] = 0;
+TenBy15Array[8, 14] = 0;
+TenBy15Array[3, 3] = 0;
+Console.WriteLine("Original Matrix:");
+print2DArray(TenBy15Array);
+matrixResult = ArraysAndStrings.zeroExpands(TenBy15Array);
+Console.WriteLine("Zeros expanded on x and y:");
+print2DArray(matrixResult);
+
+Console.WriteLine("Question 8 - 1st Attempt");
+if (!ArraysAndStrings.isRotation1stAttempt("waterbottle", "erbottlewat")) Console.WriteLine("FAIL");
+if (ArraysAndStrings.isRotation1stAttempt("waterbottle", "erbottlewa")) Console.WriteLine("FAIL");
+if (ArraysAndStrings.isRotation1stAttempt("waterbottle", "erbottlewatt")) Console.WriteLine("FAIL");
+if (ArraysAndStrings.isRotation1stAttempt("waterbottle", "abcgdgfdgy")) Console.WriteLine("FAIL");
+if (!ArraysAndStrings.isRotation1stAttempt("wat12erbottle", "erbottlewat12")) Console.WriteLine("FAIL");
+
+// This is the example where my 1st attempt falls over. See comments below function for explanation.
+if (ArraysAndStrings.isRotation1stAttempt("123erbottle", "3erbottl123")) Console.WriteLine("FAIL (But expected)");
+
+Console.WriteLine("Question 8 - 2nd Attempt");
+if (!ArraysAndStrings.isRotation2ndAttempt("waterbottle", "erbottlewat")) Console.WriteLine("FAIL");
+if (ArraysAndStrings.isRotation2ndAttempt("waterbottle", "erbottlewa")) Console.WriteLine("FAIL");
+if (ArraysAndStrings.isRotation2ndAttempt("waterbottle", "erbottlewatt")) Console.WriteLine("FAIL");
+if (ArraysAndStrings.isRotation2ndAttempt("waterbottle", "abcgdgfdgy")) Console.WriteLine("FAIL");
+if (!ArraysAndStrings.isRotation2ndAttempt("wat12erbottle", "erbottlewat12")) Console.WriteLine("FAIL");
+
+// From previous one - showing it now works
+if (ArraysAndStrings.isRotation2ndAttempt("123erbottle", "3erbottl123")) Console.WriteLine("FAIL (But NOT expected)");
 
 Console.WriteLine("Finished!");
 
@@ -51,9 +88,9 @@ Console.WriteLine("Finished!");
 // Provided for help debugging 2D array questions
 static void print2DArray<T>(T[,] matrix)
 {
-    for (int y = 0; y < matrix.GetLength(0); y++)
+    for (int y = 0; y < matrix.GetLength(1); y++)
     {
-        for (int x = 0; x < matrix.GetLength(1); x++)
+        for (int x = 0; x < matrix.GetLength(0); x++)
         {
             Console.Write(matrix[x, y] + "\t");
         }
@@ -63,9 +100,9 @@ static void print2DArray<T>(T[,] matrix)
 static int[,] fill2DArray(int[,] matrix)
 {
     int counter = 0;
-    for (int y = 0; y < matrix.GetLength(0); y++)
+    for (int y = 0; y < matrix.GetLength(1); y++)
     {
-        for (int x = 0; x < matrix.GetLength(1); x++)
+        for (int x = 0; x < matrix.GetLength(0); x++)
         {
             counter++;
             matrix[x, y] = counter;
