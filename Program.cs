@@ -30,7 +30,8 @@ if (!(ArraysAndStrings.urlEncodeSpaces("Mr John Smith ") == "Mr%20John%20Smith%2
 Console.WriteLine("Question 5");
 if(!(ArraysAndStrings.compress("aabcccccaaa") == "a2b1c5a3")) Console.WriteLine("FAIL");
 if (!(ArraysAndStrings.compress("aggjncvcctyjfssaaaaaaaaaaaaaa") == "a1g2j1n1c1v1c2t1y1j1f1s2a14")) Console.WriteLine("FAIL");
-if (!(ArraysAndStrings.compress("b") == "b1")) Console.WriteLine("FAIL");
+if (!(ArraysAndStrings.compress("b") == "b")) Console.WriteLine("FAIL");
+if (!(ArraysAndStrings.compress("ba") == "ba")) Console.WriteLine("FAIL");
 
 Console.WriteLine("Question 6");
 int[,] sixBy6Array = fill2DArray(new int[6, 6]);

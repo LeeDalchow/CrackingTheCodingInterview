@@ -97,21 +97,15 @@ namespace CrackingTheCodingInterview
         public static string urlEncodeSpaces(string str)
         {
             //return str.Replace(" ", "%20"); // Real world solution!
-
-            string newStr = "";
+            StringBuilder newStr = new StringBuilder();
             for (int i = 0; i < str.Length; i++)
             {
-                if (str[i] == ' ') newStr = newStr + "%20";
-                else newStr = newStr + str[i];
+                if (str[i] == ' ') newStr.Append("%20");
+                else newStr.Append(str[i]);
             }
 
-            return newStr;
+            return newStr.ToString();
         }
-        /* Problem with the above is that it is not very efficient for long-strings as it will recreate the string in memory each
-         * time it appends a new character to newStr. A more efficient way may be to calculate the final length of the string
-         * before building it in memory, however as the question assumes we already know this figure, I won't optimise the algorithm in this way.
-         * UPDATE: A StringBuffer would do exactly this!
-         */
 
         /*
          * 5. Implement a method to perform basic string compression using the counts of repeated characters. For example
@@ -123,7 +117,7 @@ namespace CrackingTheCodingInterview
         {
             if (str.Length == 0) return "";
 
-            string newStr = "";
+            StringBuilder newStr = new StringBuilder();
             char curChar = '0';
             int charCount = 0;
             for (int i = 0; i < str.Length; i++)
@@ -131,15 +125,17 @@ namespace CrackingTheCodingInterview
                 if (curChar == str[i]) charCount++;
                 else
                 {
-                    if (curChar != '0') newStr = newStr + curChar.ToString() + charCount.ToString();
+                    if (curChar != '0') newStr.Append(curChar.ToString() + charCount.ToString());
 
                     curChar = str[i];
                     charCount = 1;
                 }
             }
 
-            newStr = newStr + curChar + charCount.ToString(); // Make sure to get final char!
-            return newStr;
+            newStr.Append(curChar.ToString() + charCount.ToString()); // Make sure to get final char!
+
+            if (newStr.ToString().Length >= str.Length) return str; // If it's not any shorter...
+            else return newStr.ToString();
         }
 
         /*
