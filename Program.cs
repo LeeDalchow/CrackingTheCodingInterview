@@ -1,4 +1,5 @@
-﻿// Simple Test Harness. Simply call the functions to be tested below:
+﻿// Simple Test Harness. Simply calls the functions to be tested below.
+// I have not optimised this module for efficiency. It's meant to be a quick-and-dirty test harness.
 
 
 using CrackingTheCodingInterview;
@@ -81,6 +82,24 @@ if (!ArraysAndStrings.isRotation2ndAttempt("wat12erbottle", "erbottlewat12")) Co
 
 // From previous one - showing it now works
 if (ArraysAndStrings.isRotation2ndAttempt("123erbottle", "3erbottl123")) Console.WriteLine("FAIL (But NOT expected)");
+
+// =================================================================================================================
+
+Console.WriteLine("Chapter 2 - Linked Lists");
+Console.WriteLine("Question 1");
+var testLI = new LinkedList<int>();
+testLI.AddLast(1);
+testLI.AddLast(10);
+testLI.AddLast(7);
+testLI.AddLast(30);
+testLI.AddLast(100);
+testLI.AddLast(6);
+testLI.AddLast(7);
+testLI.AddLast(8);
+Console.WriteLine(testLI.Count);
+testLI = LinkedListQuestions.removeDuplicates(testLI);
+Console.WriteLine(testLI.Count);
+
 
 Console.WriteLine("Finished!");
 
