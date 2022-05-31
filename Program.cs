@@ -87,21 +87,65 @@ if (ArraysAndStrings.isRotation2ndAttempt("123erbottle", "3erbottl123")) Console
 
 Console.WriteLine("Chapter 2 - Linked Lists");
 Console.WriteLine("Question 1");
-var testLI = new LinkedList<int>();
-testLI.AddLast(1);
-testLI.AddLast(10);
-testLI.AddLast(7);
-testLI.AddLast(30);
-testLI.AddLast(100);
-testLI.AddLast(6);
-testLI.AddLast(7);
-testLI.AddLast(8);
-Console.WriteLine(testLI.Count);
-testLI = LinkedListQuestions.removeDuplicates(testLI);
-Console.WriteLine(testLI.Count);
+var testLI = produceLinkedList();
+testLI.AddLast(7); // Add another 7
+if(testLI.Count <= (LinkedListQuestions.removeDuplicates(testLI)).Count) Console.WriteLine("FAIL");
+
+
+Console.WriteLine("Question 1b");
+
+testLI = produceLinkedList();
+testLI.AddLast(7); // Add another 7
+if (testLI.Count <= (LinkedListQuestions.removeDuplicatesInPlace(testLI)).Count) Console.WriteLine("FAIL");
+
+Console.WriteLine("Question 2");
+testLI = produceLinkedList();
+if (LinkedListQuestions.findKLastElement(testLI, 0).Value != 8) Console.WriteLine("FAIL");
+if (LinkedListQuestions.findKLastElement(testLI,1).Value != 7) Console.WriteLine("FAIL");
+if (LinkedListQuestions.findKLastElement(testLI, 2).Value != 6) Console.WriteLine("FAIL");
+if (LinkedListQuestions.findKLastElement(testLI, 3).Value != 100) Console.WriteLine("FAIL");
+if (LinkedListQuestions.findKLastElement(testLI, 4).Value != 30) Console.WriteLine("FAIL");
+
+Console.WriteLine("Question 3 (Skipped, due to limitations in .NET LinkedList implementation)");
+
+
+Console.WriteLine("Question 4");
+var testSLI = produceSinglyLinkedList();
+testSLI = LinkedListQuestions.partitionLinkedList(testSLI, 8);
+Console.WriteLine(String.Join(",", testSLI.ToArray()));
+
+// =================================================================================================================
 
 
 Console.WriteLine("Finished!");
+
+
+static SinglyLinkedList<int> produceSinglyLinkedList()
+{
+    var testSLI = new SinglyLinkedList<int>();
+    testSLI.AddLast(1);
+    testSLI.AddLast(10);
+    testSLI.AddLast(7);
+    testSLI.AddLast(30);
+    testSLI.AddLast(100);
+    testSLI.AddLast(6);
+    testSLI.AddLast(7);
+    testSLI.AddLast(8);
+    return testSLI;
+}
+
+static LinkedList<int> produceLinkedList() {
+    var testLI = new LinkedList<int>();
+    testLI.AddLast(1);
+    testLI.AddLast(10);
+    testLI.AddLast(7);
+    testLI.AddLast(30);
+    testLI.AddLast(100);
+    testLI.AddLast(6);
+    testLI.AddLast(7);
+    testLI.AddLast(8);
+    return testLI;
+}
 
 
 // Provided for help debugging 2D array questions
