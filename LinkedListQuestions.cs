@@ -117,6 +117,37 @@ namespace CrackingTheCodingInterview
          * Input: (7>1>6) + (5>9>2). That is, 617 + 295
          * Output: 2>1>9. That is, 912
          */
+        public static LinkedList<int> addNumbers(LinkedList<int> n1, LinkedList<int> n2)
+        {
+            int num1 = 0;
+            int num2 = 0;
+            int growthFactor = 1;
+            var node1 = n1.First;
+            var node2 = n2.First;
+
+            do // calculate input numbers.
+            {
+                if(node1 != null) num1 += node1.Value * growthFactor;
+                if(node2 != null) num2 += node2.Value * growthFactor;
+                growthFactor *= 10;
+                node1 = node1.Next;
+                node2 = node2.Next;
+            } while (node1 != null || node2 != null);
+
+            double newNumber = num1 + num2; // Do the calculation. Leave as double so we have control over the rounding later.
+
+            // Bring back into Linked List
+            var result = new LinkedList<int>();
+            do
+            {
+                growthFactor /= 10;
+                int digitAdded = (int)Math.Floor(newNumber / growthFactor); // Do the division, round down & convert back to int.
+                result.AddLast(digitAdded); 
+                newNumber -= digitAdded * growthFactor;
+            } while (growthFactor > 1);
+
+            return result;
+        }
 
 
         // 5b. Suppose the digits are stored in forward order. Repeat the above problem.

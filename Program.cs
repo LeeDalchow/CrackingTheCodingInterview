@@ -114,6 +114,26 @@ var testSLI = produceSinglyLinkedList();
 testSLI = LinkedListQuestions.partitionLinkedList(testSLI, 8);
 Console.WriteLine(String.Join(",", testSLI.ToArray()));
 
+
+Console.WriteLine("Question 5");
+var n1 = new LinkedList<int>();
+n1.AddLast(7);
+n1.AddLast(1);
+n1.AddLast(6);
+var n2 = new LinkedList<int>();
+n2.AddLast(5);
+n2.AddLast(9);
+n2.AddLast(2);
+var n3 = LinkedListQuestions.addNumbers(n1, n2);
+if (String.Join(",", n3.ToArray()) != "9,1,2") Console.WriteLine("FAIL!");
+
+
+Console.WriteLine("Question 5b");
+
+Console.WriteLine("Question 6");
+
+Console.WriteLine("Question 7");
+
 // =================================================================================================================
 
 
