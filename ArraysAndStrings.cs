@@ -13,9 +13,9 @@ namespace CrackingTheCodingInterview
         // Question 1 - Implement an algorithm to determine if a string has all unique characters.
         public static bool isAllUnique(string testString)
         {
-            var keyCounter = new Dictionary<char, bool>();
+            var keyCounter = new Dictionary<char, bool>(); // I chose a Dictionary becuase the Dict.ContainsKey function is more efficient than List.Contains
 
-            for (int i = 0; i < testString.Length; i++)
+            for (int i = 0; i < testString.Length; i++) // For each character
             {
                 char charToTest = testString[i];
 
@@ -29,9 +29,9 @@ namespace CrackingTheCodingInterview
         // 1b. What if you cannot use additional data structures?
         public static bool isAllUniqueNoDS(string testString)
         {
-            for (int i = 0; i < testString.Length; i++)
+            for (int i = 0; i < testString.Length; i++) // For each character
             {
-                for (int y = i + 1; y < testString.Length; y++) // loop through the remainder of the string
+                for (int y = i + 1; y < testString.Length; y++) // For each character in the rest of the string.
                 {
                     if (testString[y] == testString[i]) return false;
                 }
@@ -41,14 +41,14 @@ namespace CrackingTheCodingInterview
         }
 
         // 2. Implement a function void reverse(char* str) in C or C++ which reverses a null-terminated string.
-        // Lee: I will write this in C# below WITHOUT using the in-build reverse() function in the string class.
+        // Lee: I will write this in C# below WITHOUT using the in-built reverse() function in the string class.
         public static void reverse(ref string str)
         {
             //str = new String(str.Reverse().ToArray()); // real-world solution!
 
             char[] newStr = str.ToCharArray(); // Better to pre-define entire string length to avoid recreating string each iteration.
             int y = 0;
-            for (int i = str.Length - 1; i >= 0; i--)
+            for (int i = str.Length - 1; i >= 0; i--) // For each character in the string
             {
                 newStr[y] = str[i];
                 y++;
@@ -59,28 +59,27 @@ namespace CrackingTheCodingInterview
         // 3. Given two strings, write a method to decide if one is a permutation of the other.
         public static bool isPermutation(string str1, string str2)
         {
-            if (str1.Length != str2.Length) return false; // We can assume now onwards that the strings are the same length
+            if (str1.Length != str2.Length) return false; // We can assume from now onwards that the strings are the same length
 
-            var keyCounterStr1 = new Dictionary<char, int>();
-            var keyCounterStr2 = new Dictionary<char, int>();
+            var keyCounterStr = new Dictionary<char, int>();
 
             // Build Map of characters to counts
             for (int i = 0; i < str1.Length; i++)
             {
-                if (keyCounterStr1.ContainsKey(str1[i])) keyCounterStr1[str1[i]]++;
-                else keyCounterStr1.Add(str1[i], 1);
+                if (keyCounterStr.ContainsKey(str1[i])) keyCounterStr[str1[i]]++; // +1 for str1 characters
+                else keyCounterStr.Add(str1[i], 1);
 
-                if (keyCounterStr2.ContainsKey(str2[i])) keyCounterStr2[str2[i]]++;
-                else keyCounterStr2.Add(str2[i], 1); // Code Smell - duplicated code. Could probably put this into a seperate method... but given how small it is I'll leave it as it is for now.
-            } // Another way to implement this would be to use a single Dict and ++ for str1 characters and -- for str2 characters. All keys should then == 0.
-
-            // Check dictionarys are equal given that we know str1 & str2 are the same length.
-            foreach (var key in keyCounterStr1.Keys)
-            {
-                if (keyCounterStr1[key] != keyCounterStr2[key]) return false;
+                if (keyCounterStr.ContainsKey(str2[i])) keyCounterStr[str2[i]]--; // -1 for str2 characters
+                else keyCounterStr.Add(str2[i], -1);
             }
 
-            return true;
+            // If it is a Permutation, all keys should now == 0
+            foreach (var key in keyCounterStr.Keys)
+            {
+                if (keyCounterStr[key] != 0) return false;
+            }
+
+            return true; // If we get here, it's a Permutation!
         }
 
         /* 4. Write a method to replace all spaces in a string with '%20%'. You may assume that
@@ -92,13 +91,14 @@ namespace CrackingTheCodingInterview
          * Output: "Mr%20%John%20Smith"
          * 
          * Lee: In the context of C#, we don't need to worry about the total length of the string, as this is a C
-         * concept where strings are of fixed length and null-terminated.
+         * concept where strings are of fixed length and null-terminated. C# handles all of this for you.
         */
         public static string urlEncodeSpaces(string str)
         {
             //return str.Replace(" ", "%20"); // Real world solution!
+
             StringBuilder newStr = new StringBuilder();
-            for (int i = 0; i < str.Length; i++)
+            for (int i = 0; i < str.Length; i++) // for each char in str
             {
                 if (str[i] == ' ') newStr.Append("%20");
                 else newStr.Append(str[i]);
@@ -117,26 +117,38 @@ namespace CrackingTheCodingInterview
         {
             if (str.Length == 0) return "";
 
-            StringBuilder newStr = new StringBuilder();
-            char curChar = '0';
+            StringBuilder newStr = new StringBuilder(); // Used to avoid expensive string concatanation within the loop.
+            char curChar = '0'; // Null-like value, as this is not a valid char in str.
             int charCount = 0;
-            for (int i = 0; i < str.Length; i++)
+            int originalStrLength = str.Length; // to avoid processing each time we need it.
+
+            for (int i = 0; i < originalStrLength; i++) // for each char in str
             {
                 if (curChar == str[i]) charCount++;
                 else
                 {
-                    if (curChar != '0') newStr.Append(curChar.ToString() + charCount.ToString());
+                    if (curChar != '0')
+                    {
+                        if (_addCharAndCheckLength(newStr, curChar, charCount, originalStrLength)) return str;
+                    }
 
                     curChar = str[i];
                     charCount = 1;
+                    
                 }
             }
 
-            newStr.Append(curChar.ToString() + charCount.ToString()); // Make sure to get final char!
+            if (_addCharAndCheckLength(newStr, curChar, charCount, originalStrLength)) return str; // Make sure not to forget final char!
 
-            // Ideally, the following line would be at the start of the function, to pre-calculate the compressed length to avoid having to calculate the compressed string entirely.
-            if (newStr.ToString().Length >= str.Length) return str; // If it's not any shorter...
-            else return newStr.ToString();
+            return newStr.ToString();
+        }
+
+        // Returns True if the the length of the new string is greater than the length of the original string, False if not.
+        private static bool _addCharAndCheckLength(StringBuilder newStr, char curChar, int charCount, int originalStrLength)
+        {
+            newStr.Append(curChar.ToString() + charCount.ToString()); 
+            if (newStr.Length >= originalStrLength) return true; // If it's not going to be any shorter, just return the original string
+            else return false;
         }
 
         /*
@@ -153,10 +165,11 @@ namespace CrackingTheCodingInterview
 
             for (int x = 0; x < n; x++)
             {
-                for (int y = 0; y < n; y++)
+                for (int y = 0; y < n; y++) // for each x,y cord
                 {
-                    int newX = n - 1 - y; // rows become columns from right-to-left
-                    int newY = x;
+                    // rows become the columns but from right-to-left
+                    int newX = n - 1 - y; // New Columns start from right, and slowly move to the left as we go down original Y Axis.
+                    int newY = x; // And then move down the new column as we move across the original X axis.
                     result[newX, newY] = image[x, y];
 
                 }
@@ -166,83 +179,114 @@ namespace CrackingTheCodingInterview
 
 
         // 6b. Can you do this in-place?
-        public static int[,] rotateImageInPlace(int[,] image) // 4-byte pixel is int data-type
+        public static void rotateImageInPlace(ref int[,] image) // 4-byte pixel is int data-type
         {
             // We will assume we will be rotating clockwise
-            int n = image.GetLength(0); // NxN matrix
 
             // Step 1 - Transpose matrix
+            _transpose(ref image);
+
+            // Step 2 - Flip Horizontally
+            _flipHorizontally(ref image);
+        }
+
+        private static void _transpose(ref int[,] image)
+        {
+            int n = image.GetLength(0); // Assume matrix is NxN
+
             for (int x = 0; x < n; x++)
             {
-                for (int y = x; y < n; y++)
+                for (int y = x; y < n; y++) // For each x,y cord
                 {
                     if (x == y) continue; // if middle diagonal - skip
 
+                    // Swap X & Y
                     int temp = image[x, y];
                     image[x, y] = image[y, x];
                     image[y, x] = temp;
                 }
             }
+        }
 
+        private static void _flipHorizontally(ref int[,] image)
+        {
+            int n = image.GetLength(0); // Assume matrix is NxN
 
-            // Step 2 - Flip Horizontally
-            for (int y = 0; y < n; y++) // for each row (Y Cood)
+            for (int y = 0; y < n; y++) // for each row (Y Cord)
             {
-                int rowEnd = n - 1;
-                for (int rowStart = 0; rowStart < rowEnd; rowStart++)
-                { // for each element in row (x cood)
-                    int temp = image[rowStart, y];
-                    image[rowStart, y] = image[rowEnd, y];
-                    image[rowEnd, y] = temp;
-                    rowEnd--;
-                }
+                int rowPosEnd = n - 1;
+                int rowPosStart = 0;
 
+                // Swap elements left-to-right, and slowly move the pointers towards each other in the middle.
+                while (rowPosStart < rowPosEnd)
+                {
+                    int temp = image[rowPosStart, y];
+                    image[rowPosStart, y] = image[rowPosStart, y];
+                    image[rowPosEnd, y] = temp;
+
+                    rowPosStart++;
+                    rowPosEnd--;
+                };
             }
-            return image;
         }
 
         // 7. Write an algorithm such that if an element in an MxN matrix is 0, its entire row and column are set to 0.
         public static int[,] zeroExpands(int[,] matrix)
         {
             // Where are the 0's located?
-            var xList = new List<int>();
-            var yList = new List<int>();
+            var xZeros = new List<int>();
+            var yZeros = new List<int>();
 
             int xn = matrix.GetLength(0); // Total x coordinates
             int yn = matrix.GetLength(1); // Total y coordinates
 
             // Find the x & y coods of the 0's
+            // Was debating making this a seperate method, but I think the below is bespoke enough for it not to be required.
             for (int x = 0; x < xn; x++)
             {
                 for (int y = 0; y < yn; y++)
                 {
                     if (matrix[x, y] == 0)
                     {
-                        xList.Add(x);
-                        yList.Add(y);
+                        xZeros.Add(x);
+                        yZeros.Add(y);
                     }
                 }
             }
 
             // Block out all the 0's for X coods
-            foreach (int x in xList)
+            foreach (int x in xZeros)
             {
-                for (int y = 0; y < yn; y++)
-                {
-                    matrix[x, y] = 0;
-                }
+                _givenXReplaceYWithValue(ref matrix, x, 0);
             }
 
             // Block out of the 0's for Y Coods
-            foreach (int y in yList)
+            foreach (int y in yZeros)
             {
-                for (int x = 0; x < xn; x++)
-                {
-                    matrix[x, y] = 0;
-                }
+                _givenYReplaceXWithValue(ref matrix, y, 0);
             }
 
             return matrix;
+        }
+
+        private static void _givenXReplaceYWithValue(ref int[,] matrix,int x, int newValue)
+        {
+            int yn = matrix.GetLength(1); // Total y coordinates
+
+            for (int y = 0; y < yn; y++)
+            {
+                matrix[x, y] = newValue;
+            }
+        }
+
+        private static void _givenYReplaceXWithValue(ref int[,] matrix, int y, int newValue)
+        {
+            int xn = matrix.GetLength(0); // Total x coordinates
+
+            for (int x = 0; x < xn; x++)
+            {
+                matrix[x, y] = newValue;
+            }
         }
 
         /* 

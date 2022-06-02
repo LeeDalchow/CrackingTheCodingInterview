@@ -47,9 +47,9 @@ Console.WriteLine("Question 6b");
 int[,] NineBy9Array = fill2DArray(new int[9, 9]);
 Console.WriteLine("Original Matrix:");
 print2DArray(NineBy9Array);
-matrixResult = ArraysAndStrings.rotateImageInPlace(NineBy9Array);
+ArraysAndStrings.rotateImageInPlace(ref NineBy9Array);
 Console.WriteLine("Rotated clockwise by 90 degrees:");
-print2DArray(matrixResult);
+print2DArray(NineBy9Array);
 
 Console.WriteLine("Question 7");
 int[,] TenBy15Array = fill2DArray(new int[10, 15]);
@@ -152,6 +152,35 @@ Console.WriteLine("Question 7");
 if(LinkedListQuestions.isPalindrome(produceLinkedList())) Console.WriteLine("FAIL!");
 if (!LinkedListQuestions.isPalindrome(produceLinkedListOddPalindrome())) Console.WriteLine("FAIL!");
 if (!LinkedListQuestions.isPalindrome(produceLinkedListEvenPalindrome())) Console.WriteLine("FAIL!");
+
+// =================================================================================================================
+
+Console.WriteLine("Chapter 3 - Stacks and Queues - Not Yet Implemented");
+
+// =================================================================================================================
+
+Console.WriteLine("Chapter 4 - Trees and Graphs - Not Yet Implemented");
+
+// =================================================================================================================
+
+Console.WriteLine("Chapter 5 - Bit Manipulation - Not Yet Implemented");
+
+// =================================================================================================================
+
+Console.WriteLine("Chapter 6 - Brain Teasers - Not Yet Implemented");
+
+// =================================================================================================================
+
+Console.WriteLine("Chapter 7 - Mathematics and Probability - Not Yet Implemented");
+
+// =================================================================================================================
+
+Console.WriteLine("Chapter 8 - Object-Oriented Design");
+
+// TODO - Split up code into sub-methods where appropiate in Chapter 1 & Chapter 2. Make it as readable and maintainable as possible.
+// in todo above, q8 in array & strings.
+// TODO - Put simple CRUD app into seperate github repo
+// TODO - Chapter 8.
 
 
 // =================================================================================================================
