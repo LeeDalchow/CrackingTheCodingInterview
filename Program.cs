@@ -149,6 +149,9 @@ if (LinkedListQuestions.findStartOfLoop(testSLI).Value != 100) Console.WriteLine
 
 
 Console.WriteLine("Question 7");
+if(LinkedListQuestions.isPalindrome(produceLinkedList())) Console.WriteLine("FAIL!");
+if (!LinkedListQuestions.isPalindrome(produceLinkedListOddPalindrome())) Console.WriteLine("FAIL!");
+if (!LinkedListQuestions.isPalindrome(produceLinkedListEvenPalindrome())) Console.WriteLine("FAIL!");
 
 
 // =================================================================================================================
@@ -197,6 +200,29 @@ static LinkedList<int> produceLinkedList() {
     testLI.AddLast(6);
     testLI.AddLast(7);
     testLI.AddLast(8);
+    return testLI;
+}
+
+static LinkedList<int> produceLinkedListOddPalindrome()
+{
+    var testLI = new LinkedList<int>();
+    testLI.AddLast(1);
+    testLI.AddLast(2);
+    testLI.AddLast(3);
+    testLI.AddLast(2);
+    testLI.AddLast(1);
+    return testLI;
+}
+
+static LinkedList<int> produceLinkedListEvenPalindrome()
+{
+    var testLI = new LinkedList<int>();
+    testLI.AddLast(1);
+    testLI.AddLast(2);
+    testLI.AddLast(3);
+    testLI.AddLast(3);
+    testLI.AddLast(2);
+    testLI.AddLast(1);
     return testLI;
 }
 

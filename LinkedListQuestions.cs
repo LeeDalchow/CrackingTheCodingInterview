@@ -197,12 +197,7 @@ namespace CrackingTheCodingInterview
          */
 
         public static SinglyLinkedList<int>.Node findStartOfLoop(SinglyLinkedList<int> toSearch)
-        {
-            // 2 possible ways to do this:
-            // 1) Create a seperate data structure to store the Nodes seen so far (ByRef)
-            // 2) Have two runners, a slow pointer & a fast pointer. The slow pointer moves at 1 pace & the fast pointer moves at 2 paces.
-            // However, option 2 seems to be overly complicated as there are several extra parts which need to be considered. I will implement option 1.
-
+        { 
             var nodesFound = new List<SinglyLinkedList<int>.Node>();
             for(var curNode = toSearch.First; curNode != null; curNode = curNode.Next)
             {
@@ -215,7 +210,20 @@ namespace CrackingTheCodingInterview
         }
 
         //7. Implement a function to check if a linked list is a palindrome.
+        public static bool isPalindrome(LinkedList<int> toCheck)
+        {
+            var firstRunner = toCheck.First; // run from start
+            var lastRunner = toCheck.Last; // run from end
 
+            do
+            {
+                if ((firstRunner == null || lastRunner == null) && firstRunner != lastRunner) return false; // One is longer/shorter than the other.
+                else if (firstRunner == null && lastRunner == null) return true; // end reached
+                else if (firstRunner.Value != lastRunner.Value) return false; // same so far, keep looping.
+                firstRunner = firstRunner.Next;
+                lastRunner = lastRunner.Previous;
+            } while (true);
+        }
     }
 
 
