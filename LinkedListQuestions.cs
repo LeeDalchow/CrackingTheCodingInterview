@@ -151,6 +151,53 @@ namespace CrackingTheCodingInterview
 
 
         // 5b. Suppose the digits are stored in forward order. Repeat the above problem.
+        //Lee: Basically the same, but go backwards via the linkedlist since it's doubly linked.
+        // Using a singly linkedlist would require calculating the maximum growthFactor and then /10 each node to extract the number.
+        // I've copy-pasted the below since it's a new question but honestly you could probably build a single method to do both 5 & 5b depending on a parameter.
+        public static LinkedList<int> addNumbersReverseOrder(LinkedList<int> n1, LinkedList<int> n2)
+        {
+            int num1 = 0;
+            int num2 = 0;
+            int growthFactor = 1;
+            var node1 = n1.Last;
+            var node2 = n2.Last;
+
+            do // calculate input numbers.
+            {
+                if (node1 != null) num1 += node1.Value * growthFactor;
+                if (node2 != null) num2 += node2.Value * growthFactor;
+                growthFactor *= 10;
+                node1 = node1.Previous;
+                node2 = node2.Previous;
+            } while (node1 != null || node2 != null);
+
+            double newNumber = num1 + num2; // Do the calculation. Leave as double so we have control over the rounding later.
+
+            // Bring back into Linked List
+            var result = new LinkedList<int>();
+            do
+            {
+                growthFactor /= 10;
+                int digitAdded = (int)Math.Floor(newNumber / growthFactor); // Do the division, round down & convert back to int.
+                result.AddFirst(digitAdded);
+                newNumber -= digitAdded * growthFactor;
+            } while (growthFactor > 1);
+
+            return result;
+        }
+
+        /*
+         * 6. Given a circular linked list, implement an algorithm which returns the node at the start of the loop.
+         * 
+         * EXAMPLE:
+         * 
+         * A > B > C > D > E > C (Same C as earlier)
+         * 
+         * Output: C
+         */
+
+        //7. Implement a function to check if a linked list is a palindrome.
+
     }
 
 

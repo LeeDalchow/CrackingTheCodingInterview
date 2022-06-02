@@ -129,6 +129,16 @@ if (String.Join(",", n3.ToArray()) != "9,1,2") Console.WriteLine("FAIL!");
 
 
 Console.WriteLine("Question 5b");
+n1 = new LinkedList<int>();
+n1.AddLast(6);
+n1.AddLast(1);
+n1.AddLast(7);
+n2 = new LinkedList<int>();
+n2.AddLast(2);
+n2.AddLast(9);
+n2.AddLast(5);
+n3 = LinkedListQuestions.addNumbersReverseOrder(n1, n2);
+if (String.Join(",", n3.ToArray()) != "2,1,9") Console.WriteLine("FAIL!");
 
 Console.WriteLine("Question 6");
 
