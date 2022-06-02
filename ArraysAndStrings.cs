@@ -295,7 +295,7 @@ namespace CrackingTheCodingInterview
          */
 
         // Will write the isSubstring function first
-        private static bool isSubString(string s1, string s2)
+        private static bool _isSubString(string s1, string s2)
         {
             return s1.Contains(s2);
         }
@@ -313,7 +313,7 @@ namespace CrackingTheCodingInterview
                     int half2Length = s2.Length - i;
                     if(s1.Substring(0, half2Length) == s2.Substring(i)) // The 2nd half of s2 matches s1
                     {
-                        if (isSubString(s1, s2.Substring(0, s2.Length - half2Length))) return true;
+                        if (_isSubString(s1, s2.Substring(0, s2.Length - half2Length))) return true;
                     }
                 }
             }
@@ -352,7 +352,7 @@ namespace CrackingTheCodingInterview
             if (s1.Length == 0) return true;
 
             string s1s1 = s1 + s1;
-            return isSubString(s1s1, s2);
+            return _isSubString(s1s1, s2);
         }
     }
 }
