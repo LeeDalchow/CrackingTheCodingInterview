@@ -141,14 +141,37 @@ n3 = LinkedListQuestions.addNumbersReverseOrder(n1, n2);
 if (String.Join(",", n3.ToArray()) != "2,1,9") Console.WriteLine("FAIL!");
 
 Console.WriteLine("Question 6");
+testSLI = produceSinglyLinkedList();
+if(LinkedListQuestions.findStartOfLoop(testSLI) != null) Console.WriteLine("FAIL!");
+
+testSLI = produceSinglyLinkedListWithLoop();
+if (LinkedListQuestions.findStartOfLoop(testSLI).Value != 100) Console.WriteLine("FAIL!");
+
 
 Console.WriteLine("Question 7");
+
 
 // =================================================================================================================
 
 
 Console.WriteLine("Finished!");
 
+
+static SinglyLinkedList<int> produceSinglyLinkedListWithLoop()
+{
+    var testSLI = new SinglyLinkedList<int>();
+    testSLI.AddLast(1);
+    testSLI.AddLast(10);
+    testSLI.AddLast(7);
+    testSLI.AddLast(30);
+    testSLI.AddLast(100);
+    var loopNode = testSLI.Last;
+    testSLI.AddLast(6);
+    testSLI.AddLast(7);
+    testSLI.AddLast(8);
+    testSLI.Last.Next = loopNode;
+    return testSLI;
+}
 
 static SinglyLinkedList<int> produceSinglyLinkedList()
 {
