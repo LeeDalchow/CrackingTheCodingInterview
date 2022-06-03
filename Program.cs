@@ -177,8 +177,7 @@ Console.WriteLine("Chapter 7 - Mathematics and Probability - Not Yet Implemented
 
 Console.WriteLine("Chapter 8 - Object-Oriented Design");
 
-// TODO - Split up code into sub-methods where appropiate in Chapter 1 & Chapter 2. Make it as readable and maintainable as possible.
-// in todo above, q8 in array & strings.
+// TODO - Refactor Chapter 1 & Chapter 2 (Just need to do Q8 on Chap 1, then move onto Chap 2)
 // TODO - Put simple CRUD app into seperate github repo
 // TODO - Chapter 8.
 

@@ -300,31 +300,34 @@ namespace CrackingTheCodingInterview
             return s1.Contains(s2);
         }
 
+        // This was my 1st attempt... which while it 'works', it's not the correct solution for the above problem.
         public static bool isRotation1stAttempt(string s1, string s2)
         {
+            // Basic sense-checking here
             if (s1.Length != s2.Length) return false;
             if (s1.Length == 0) return true;
 
-            char s1First = s1[0];
-
-            for(int i = 0; i < s2.Length; i++)
+            for(int i = 0; i < s2.Length; i++) // Loop through s2 to find where 1st letter of s2 begins.
             {
-                if(s1First == s2[i]) { // Found it!
-                    int half2Length = s2.Length - i;
-                    if(s1.Substring(0, half2Length) == s2.Substring(i)) // The 2nd half of s2 matches s1
+                if(s1[0] == s2[i]) { // Found it!
+                    int s2Intersection = s2.Length - i; // Position of 1st char of s1 in s2.
+                    if(s1.Substring(0, s2Intersection) == s2.Substring(i)) // Does the remainder of s2 match the first part of s1?
                     {
-                        if (_isSubString(s1, s2.Substring(0, s2.Length - half2Length))) return true;
+                        if (_isSubString(s1, s2.Substring(0, s2.Length - s2Intersection))) return true; // Does the 1st part of s2, match the 2nd part of s1?
+
+                        // Better implementation below, although this does not use _isSubString, so commented out.
+                        // if (s1.Substring(s2Intersection) == s2.Substring(0, s2.Length - s2Intersection)) return true; // Does the 1st part of s2, match the 2nd part of s1?
                     }
                 }
             }
 
             return false;
         }
-        // Problem with this is that isSubString could be called multiple times in some cases.
-        // It's also possible to form a string that would pass this check but not be a rotation, so not an ideal solution at all!
-        // It would be better in this case NOT to use isSubstring and instead to calculate the exact substring location within s1 directly to do an isEqual comparison.
-        // The isSubstring line would look like this instead:
-        // if (s1.Substring(half2Length) == s2.Substring(0, s2.Length - half2Length)) return true;
+        /* Problem with this is that _isSubString could be called multiple times in some cases.
+         * It's also possible to form a string that would pass this check but not be a rotation, so this is a very bad implementation
+         * False positives can be removed by not using _isSubstring and instead to use the exact character positions as demonstrated in the commented out line.#
+         */
+        
 
 
         /*
@@ -332,18 +335,15 @@ namespace CrackingTheCodingInterview
          * Makes me want to kick myself that I didn't spot this!!
          * 
          * In the example of:
-         * 
          * s1 = "waterbottle"
          * s2 = "erbottlewat"
          * 
          * Let x = "wat" and y = "erbottle"
          * 
          * Then:
-         * 
          * s1 = xy & s2 = yx
          * 
          * Therefore:
-         * 
          * s1s1 = xyxy which s2 (yx) is a substring of.
          */
         public static bool isRotation2ndAttempt(string s1, string s2)
