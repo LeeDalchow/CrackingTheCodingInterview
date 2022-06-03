@@ -9,23 +9,21 @@ namespace CrackingTheCodingInterview
     public static class LinkedListQuestions
     {
 
-        // Note: The .NET implementation of LinkedList is a doubly linked list. For many of these problems a singly linked list
-        // would be sufficient. There's probably a library available on NuGet for singly linked lists, but for simplicity,
-        // I'll use the doubly linked list for all problems in this class.
+        /*
+         * Note: The .NET implementation of LinkedList is a doubly linked list. For many of these problems a singly linked list
+         * is assumed, however for simplicity, I have tried to use the .NET implementation where possible.
+         * From Question 3 onwards, I implemented where appropiate a simple SinglyLinkedList class which was modified & expanded from a class I found on stackoverflow.
+         */
 
         // 1. Write code to remove duplicates from an unsorted linked list.
         // Lee: I'll assume that the data type of the Linked List is an int.
         public static LinkedList<int> removeDuplicates(LinkedList<int> listToCheck)
         {
-            var foundValues = new Dictionary<int, bool>();
-            for (var curNode = listToCheck.First; curNode != null; curNode = curNode.Next)
+            var foundValues = new Dictionary<int, bool>(); // We use a Dictionary as key lookups are more efficient than ArrayLists. (Or Lists in C#)
+            for (var curNode = listToCheck.First; curNode != null; curNode = curNode.Next) // For each node in the list
             {
-                if (foundValues.ContainsKey(curNode.Value))
-                {
-                    listToCheck.Remove(curNode);
-                } else {                 
-                    foundValues.Add(curNode.Value, true);
-                }
+                if (foundValues.ContainsKey(curNode.Value)) listToCheck.Remove(curNode);
+                else foundValues.Add(curNode.Value, true);
             }
 
             return listToCheck;
@@ -34,13 +32,13 @@ namespace CrackingTheCodingInterview
         // 1b. How would you solve this problem if a temporary buffer is not allowed?
         public static LinkedList<int> removeDuplicatesInPlace(LinkedList<int> listToCheck)
         {
-            for(var curNode = listToCheck.First; curNode != null; curNode = curNode.Next)
+            for(var curNode = listToCheck.First; curNode != null; curNode = curNode.Next) // For each node in the list
             {
-                for(var prevNode = curNode.Previous; prevNode != null; prevNode = prevNode.Previous)
+                for(var nextNode = curNode.Next; nextNode != null; nextNode = nextNode.Next) // Seperate 'Runner' to head to the end of the list to find duplicates
                 {
-                    if(prevNode.Value == curNode.Value) // Duplicate found!
+                    if(nextNode.Value == curNode.Value) // Duplicate found!
                     {
-                        listToCheck.Remove(curNode);
+                        listToCheck.Remove(nextNode);
                         break;
                     }
                 }
@@ -49,14 +47,13 @@ namespace CrackingTheCodingInterview
         }
 
         //2. Implement an algorithm to find the kth to last element of a singly linked list.
+        // Lee: While I used .NET's doubly LinkedList implementation, only features of SinglyLinkedList were used.
+        // Lee: Real world solution would use: listToCheck.Count - k, but in the sprit of the question, I'll do it manually!
         public static LinkedListNode<int> findKLastElement(LinkedList<int> listToCheck, int k)
         {
-            // Real world solution would use: listToCheck.Count - k
-            // I assume 
-            
-            // Bring first runner to element K
-            int countToK = 0;
+            // Bring runner 1 to element K
             LinkedListNode<int> curNode;
+            int countToK = 0;
             for (curNode = listToCheck.First; countToK < k && curNode != null; curNode = curNode.Next) countToK++;
 
             // Loop through LinkedList with a runner always K elements behind.

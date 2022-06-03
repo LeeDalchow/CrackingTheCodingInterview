@@ -177,7 +177,7 @@ Console.WriteLine("Chapter 7 - Mathematics and Probability - Not Yet Implemented
 
 Console.WriteLine("Chapter 8 - Object-Oriented Design");
 
-// TODO - Refactor Chapter 1 & Chapter 2 (Just need to do Q8 on Chap 1, then move onto Chap 2)
+// TODO - Refactor Chapter 2. Q2 to use run1node & run2node. Q3 MUST use singlyLinkedList
 // TODO - Put simple CRUD app into seperate github repo
 // TODO - Chapter 8.
 
