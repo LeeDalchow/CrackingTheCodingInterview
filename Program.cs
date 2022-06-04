@@ -179,6 +179,9 @@ Console.WriteLine("Question 7");
 if(LinkedListQuestions.isPalindrome(produceLinkedList())) Console.WriteLine("FAIL!");
 if (!LinkedListQuestions.isPalindrome(produceLinkedListOddPalindrome())) Console.WriteLine("FAIL!");
 if (!LinkedListQuestions.isPalindrome(produceLinkedListEvenPalindrome())) Console.WriteLine("FAIL!");
+if (!LinkedListQuestions.isPalindrome(produceLinkedListLengthNPalindrome(1))) Console.WriteLine("FAIL!");
+if (!LinkedListQuestions.isPalindrome(produceLinkedListLengthNPalindrome(2))) Console.WriteLine("FAIL!");
+if (!LinkedListQuestions.isPalindrome(produceLinkedListLengthNPalindrome(3))) Console.WriteLine("FAIL!");
 
 // =================================================================================================================
 
@@ -204,7 +207,6 @@ Console.WriteLine("Chapter 7 - Mathematics and Probability - Not Yet Implemented
 
 Console.WriteLine("Chapter 8 - Object-Oriented Design");
 
-// TODO - Refactor Chapter 2. Q2 to use run1node & run2node. Q3 MUST use singlyLinkedList
 // TODO - Put simple CRUD app into seperate github repo
 // TODO - Respond to open source feedback
 // TODO - Chapter 8.
@@ -267,6 +269,16 @@ static LinkedList<int> produceLinkedListOddPalindrome()
     testLI.AddLast(3);
     testLI.AddLast(2);
     testLI.AddLast(1);
+    return testLI;
+}
+
+static LinkedList<int> produceLinkedListLengthNPalindrome(int n)
+{
+    var testLI = new LinkedList<int>();
+    for(var i = 0; i < n; i++)
+    {
+        testLI.AddLast(1);
+    }
     return testLI;
 }
 

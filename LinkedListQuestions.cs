@@ -218,24 +218,23 @@ namespace CrackingTheCodingInterview
             var lastRunner = toCheck.Last; // run from end
             var listHalfLength = toCheck.Count / 2;
 
-            var loopCounter = 0;
+            var loopCounter = 1;
             do
             {
-                loopCounter++;
-
                 if (firstRunner.Value != lastRunner.Value) return false; // same so far, keep looping.
                 else if(loopCounter > listHalfLength) return true; // We only need to check half of the loop
 
                 firstRunner = firstRunner.Next;
                 lastRunner = lastRunner.Previous;
+                loopCounter++;
             } while (true);
         }
     }
 
 
     // I got the class below from StackOverflow, and made some adjustments to it.
-    // As the .NET implementation of a linkedlist is a doubly linkedlist and some of the algorithm challenges don't really work as a result.
-    // I have implemented this, where appropiate.
+    // As the .NET implementation of a linkedlist is a doubly linkedlist, some of the algorithm challenges above don't really work as a result.
+    // I have used this class, where using the .NET implementation (and avoiding .Prev) was not an option.
     public class SinglyLinkedList<T>
     {
         public class Node
