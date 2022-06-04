@@ -216,12 +216,16 @@ namespace CrackingTheCodingInterview
         {
             var firstRunner = toCheck.First; // run from start
             var lastRunner = toCheck.Last; // run from end
+            var listHalfLength = toCheck.Count / 2;
 
+            var loopCounter = 0;
             do
             {
-                if ((firstRunner == null || lastRunner == null) && firstRunner != lastRunner) return false; // One is longer/shorter than the other.
-                else if (firstRunner == null && lastRunner == null) return true; // end reached
-                else if (firstRunner.Value != lastRunner.Value) return false; // same so far, keep looping.
+                loopCounter++;
+
+                if (firstRunner.Value != lastRunner.Value) return false; // same so far, keep looping.
+                else if(loopCounter > listHalfLength) return true; // We only need to check half of the loop
+
                 firstRunner = firstRunner.Next;
                 lastRunner = lastRunner.Previous;
             } while (true);
