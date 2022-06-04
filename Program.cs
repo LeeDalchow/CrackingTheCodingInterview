@@ -205,7 +205,7 @@ Console.WriteLine("Chapter 7 - Mathematics and Probability - Not Yet Implemented
 
 // =================================================================================================================
 
-Console.WriteLine("Chapter 8 - Object-Oriented Design");
+Console.WriteLine("Chapter 8 - Object-Oriented Design - Not Yet Implemented");
 
 // TODO - Put simple CRUD app into seperate github repo
 // TODO - Respond to open source feedback
