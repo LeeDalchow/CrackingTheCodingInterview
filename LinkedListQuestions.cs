@@ -32,11 +32,11 @@ namespace CrackingTheCodingInterview
         // 1b. How would you solve this problem if a temporary buffer is not allowed?
         public static LinkedList<int> removeDuplicatesInPlace(LinkedList<int> listToCheck)
         {
-            for(var curNode = listToCheck.First; curNode != null; curNode = curNode.Next) // For each node in the list
+            for (var curNode = listToCheck.First; curNode != null; curNode = curNode.Next) // For each node in the list
             {
-                for(var nextNode = curNode.Next; nextNode != null; nextNode = nextNode.Next) // Seperate 'Runner' to head to the end of the list to find duplicates
+                for (var nextNode = curNode.Next; nextNode != null; nextNode = nextNode.Next) // Seperate 'Runner' to head to the end of the list to find duplicates
                 {
-                    if(nextNode.Value == curNode.Value) // Duplicate found!
+                    if (nextNode.Value == curNode.Value) // Duplicate found!
                     {
                         listToCheck.Remove(nextNode);
                         break;
@@ -52,18 +52,18 @@ namespace CrackingTheCodingInterview
         public static LinkedListNode<int> findKLastElement(LinkedList<int> listToCheck, int k)
         {
             // Bring runner 1 to element K
-            LinkedListNode<int> curNode;
+            LinkedListNode<int> run1Node;
             int countToK = 0;
-            for (curNode = listToCheck.First; countToK < k && curNode != null; curNode = curNode.Next) countToK++;
+            for (run1Node = listToCheck.First; countToK < k && run1Node != null; run1Node = run1Node.Next) countToK++;
 
-            // Loop through LinkedList with a runner always K elements behind.
-            var runnerNode = listToCheck.First;
-            while(curNode.Next != null) // Loop until we find the end of the LinkedList
+            // Loop through LinkedList with runner 2 always K elements behind.
+            var run2Node = listToCheck.First;
+            while (run1Node.Next != null) // Loop until we find the end of the LinkedList
             {
-                runnerNode = runnerNode.Next;
-                curNode = curNode.Next;
+                run2Node = run2Node.Next;
+                run1Node = run1Node.Next;
             }
-            return runnerNode;
+            return run2Node; // Runner 2 will be the K last element!
         }
 
         /*
@@ -72,38 +72,30 @@ namespace CrackingTheCodingInterview
          * EXAMPLE
          * Input: The node c from the linked list a->b->c->d->e
          * Result: Nothing is returned but the new linked list looks like a-> b-> d-> e
+         * 
+         * Lee: This is the first class where I use a custom implementation of a LinkedList, as .NET's implementation is a doubly linked list.
          */
-        public static void removeNodeFromList(ref LinkedListNode<int> nodeToDelete)
+        public static void removeNodeFromList(ref SinglyLinkedList<int>.Node nodeToDelete)
         {
-            /*
-             * This does not appear to be possible within .NET's implementation of LinkedLists because LinkedListNode.Next is a readonly property.
-             * So instead, I will leave the lines not supported by .NET as commented out to avoid compile errors.
-             * I will not include this method within Program.cs
-             * 
-             * Update: It seems I can use node.List to get the original linkedlist and solve this problem that way, but I feel that is not in the
-             * sprit of the question.
-             */
-
             var nextNode = nodeToDelete.Next;
             nodeToDelete.Value = nextNode.Value;
-            //nodeToDelete.Next = nextNode.Next; // This will error because .Next is readonly in .NET
+            nodeToDelete.Next = nextNode.Next;
         }
-        
+
         // 4. Write code to partition a linked list around a value x, such that all nodes less than x come before all nodes greater than or equal to x.
-        // Note: This is the first class where I use a custom implementation of a LinkedList, as .NET's implementation is a doubly linked list.
         public static SinglyLinkedList<int> partitionLinkedList(SinglyLinkedList<int> listToCheck, int x)
         {
-            var newListSmall = new SinglyLinkedList<int>();
-            var newListBigger = new SinglyLinkedList<int>();
+            var smallerElements = new SinglyLinkedList<int>();
+            var largerElements = new SinglyLinkedList<int>();
             for (var curNode = listToCheck.First; curNode != null; curNode = curNode.Next)
             {
-                if(curNode.Value < x) newListSmall.AddLast(curNode.Value);
-                else newListBigger.AddLast(curNode.Value);
+                if (curNode.Value < x) smallerElements.AddLast(curNode.Value);
+                else largerElements.AddLast(curNode.Value);
             }
 
             // Join the 2 lists together
-            newListSmall.Last.Next = newListBigger.First;
-            return newListSmall;
+            smallerElements.Last.Next = largerElements.First;
+            return smallerElements;
         }
 
         /* 
@@ -118,67 +110,79 @@ namespace CrackingTheCodingInterview
         {
             int num1 = 0;
             int num2 = 0;
-            int growthFactor = 1;
+            int growthFactor = 1; // Used to turn single digits into full numbers that can be added together. (ie. 1>2>3 = 1+20+300)
+            var list1Node = n1.First;
+            var list2Node = n2.First;
+
+            do // calculate the input numbers.
+            {
+                if (list1Node != null) num1 += list1Node.Value * growthFactor;
+                if (list2Node != null) num2 += list2Node.Value * growthFactor;
+                growthFactor *= 10;
+                list1Node = list1Node.Next;
+                list2Node = list2Node.Next;
+            } while (list1Node != null || list2Node != null);
+
+            var newNumber = (num1 + num2).ToString().Reverse().ToArray(); // Do the calculation,convert to string & reverse as the logic needed is more readable than doing complex Maths.
+
+            var result = new LinkedList<int>();
+            foreach (char digit in newNumber)
+            {
+                result.AddLast((int)(digit - '0')); // convert char representation of a number into the actual int value
+            }
+
+            return result;
+        }
+
+
+        /*
+         * 5b. Suppose the digits are stored in forward order. Repeat the above problem.
+         * * EXAMPLE
+         * Input: (6>1>7) + (2>9>5). That is, 617 + 295
+         * Output: 9>1>2. That is, 912
+         * 
+         * Lee: I'll treat this like a singly linkedlist, I am not allowed to use .Prev
+         */
+        public static LinkedList<int> addNumbersReverseOrder(LinkedList<int> n1, LinkedList<int> n2)
+        {
+            int num1 = 0;
+            int num2 = 0;
+            int growthFactor1 = (int)Math.Pow(10, n1.Count - 1);
+            int growthFactor2 = (int)Math.Pow(10, n2.Count - 1);
             var node1 = n1.First;
             var node2 = n2.First;
 
             do // calculate input numbers.
             {
-                if(node1 != null) num1 += node1.Value * growthFactor;
-                if(node2 != null) num2 += node2.Value * growthFactor;
-                growthFactor *= 10;
+                if (node1 != null) num1 += node1.Value * growthFactor1;
+                if (node2 != null) num2 += node2.Value * growthFactor2;
+
+                growthFactor1 /= 10;
+                growthFactor2 /= 10;
+
                 node1 = node1.Next;
                 node2 = node2.Next;
             } while (node1 != null || node2 != null);
 
             double newNumber = num1 + num2; // Do the calculation. Leave as double so we have control over the rounding later.
 
-            // Bring back into Linked List
-            var result = new LinkedList<int>();
-            do
+            // Let's reuse growthFactor1 & calculate the start factor (We want to extract the highest digit)
+            growthFactor1 = 1;
+            while (newNumber / growthFactor1 >= 10)
             {
-                growthFactor /= 10;
-                int digitAdded = (int)Math.Floor(newNumber / growthFactor); // Do the division, round down & convert back to int.
-                result.AddLast(digitAdded); 
-                newNumber -= digitAdded * growthFactor;
-            } while (growthFactor > 1);
-
-            return result;
-        }
-
-
-        // 5b. Suppose the digits are stored in forward order. Repeat the above problem.
-        //Lee: Basically the same, but go backwards via the linkedlist since it's doubly linked.
-        // Using a singly linkedlist would require calculating the maximum growthFactor and then /10 each node to extract the number.
-        // I've copy-pasted the below since it's a new question but honestly you could probably build a single method to do both 5 & 5b depending on a parameter.
-        public static LinkedList<int> addNumbersReverseOrder(LinkedList<int> n1, LinkedList<int> n2)
-        {
-            int num1 = 0;
-            int num2 = 0;
-            int growthFactor = 1;
-            var node1 = n1.Last;
-            var node2 = n2.Last;
-
-            do // calculate input numbers.
-            {
-                if (node1 != null) num1 += node1.Value * growthFactor;
-                if (node2 != null) num2 += node2.Value * growthFactor;
-                growthFactor *= 10;
-                node1 = node1.Previous;
-                node2 = node2.Previous;
-            } while (node1 != null || node2 != null);
-
-            double newNumber = num1 + num2; // Do the calculation. Leave as double so we have control over the rounding later.
+                growthFactor1 *= 10;
+            };
 
             // Bring back into Linked List
             var result = new LinkedList<int>();
             do
             {
-                growthFactor /= 10;
-                int digitAdded = (int)Math.Floor(newNumber / growthFactor); // Do the division, round down & convert back to int.
-                result.AddFirst(digitAdded);
-                newNumber -= digitAdded * growthFactor;
-            } while (growthFactor > 1);
+                int highestDigit = (int)Math.Floor(newNumber / growthFactor1); // Do the division & round down to 0dp
+                result.AddLast(highestDigit);
+
+                newNumber -= highestDigit * growthFactor1;
+                growthFactor1 /= 10;
+            } while (newNumber > 0);
 
             return result;
         }
@@ -194,19 +198,20 @@ namespace CrackingTheCodingInterview
          */
 
         public static SinglyLinkedList<int>.Node findStartOfLoop(SinglyLinkedList<int> toSearch)
-        { 
+        {
             var nodesFound = new List<SinglyLinkedList<int>.Node>();
-            for(var curNode = toSearch.First; curNode != null; curNode = curNode.Next)
+            for (var curNode = toSearch.First; curNode != null; curNode = curNode.Next)
             {
                 // Does node already exist?
-                if(nodesFound.Contains(curNode)) { return curNode; } // Found the loop point!
+                if (nodesFound.Contains(curNode)) { return curNode; } // Found the loop point!
                 else nodesFound.Add(curNode);
             }
 
             return null; // If it get's here, there is no loop!
         }
 
-        //7. Implement a function to check if a linked list is a palindrome.
+        // 7. Implement a function to check if a linked list is a palindrome.
+        // Lee: This one is far more elegant using a doubly linked list as below... You could do something similar with a Singly Linked List by reversing it and comparing it against the original.
         public static bool isPalindrome(LinkedList<int> toCheck)
         {
             var firstRunner = toCheck.First; // run from start
@@ -224,10 +229,9 @@ namespace CrackingTheCodingInterview
     }
 
 
-
     // I got the class below from StackOverflow, and made some adjustments to it.
     // As the .NET implementation of a linkedlist is a doubly linkedlist and some of the algorithm challenges don't really work as a result.
-    // I have implemented this, where appropiate from Question 4 onwards.
+    // I have implemented this, where appropiate.
     public class SinglyLinkedList<T>
     {
         public class Node

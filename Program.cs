@@ -106,11 +106,16 @@ if (LinkedListQuestions.findKLastElement(testLI, 2).Value != 6) Console.WriteLin
 if (LinkedListQuestions.findKLastElement(testLI, 3).Value != 100) Console.WriteLine("FAIL");
 if (LinkedListQuestions.findKLastElement(testLI, 4).Value != 30) Console.WriteLine("FAIL");
 
-Console.WriteLine("Question 3 (Skipped, due to limitations in .NET LinkedList implementation)");
+Console.WriteLine("Question 3");
+var testSLI = produceSinglyLinkedList();
+var node1 = testSLI.First;
+var node1Val = testSLI.First.Value;
+LinkedListQuestions.removeNodeFromList(ref node1);
+if (testSLI.First.Value == node1Val) Console.WriteLine("FAIL!");
 
 
 Console.WriteLine("Question 4");
-var testSLI = produceSinglyLinkedList();
+testSLI = produceSinglyLinkedList();
 testSLI = LinkedListQuestions.partitionLinkedList(testSLI, 8);
 Console.WriteLine(String.Join(",", testSLI.ToArray()));
 
@@ -125,7 +130,18 @@ n2.AddLast(5);
 n2.AddLast(9);
 n2.AddLast(2);
 var n3 = LinkedListQuestions.addNumbers(n1, n2);
-if (String.Join(",", n3.ToArray()) != "9,1,2") Console.WriteLine("FAIL!");
+if (String.Join(",", n3.ToArray()) != "2,1,9") Console.WriteLine("FAIL!");
+
+n1 = new LinkedList<int>();
+n1.AddLast(9);
+n1.AddLast(9);
+n1.AddLast(9);
+n2 = new LinkedList<int>();
+n2.AddLast(9);
+n2.AddLast(9);
+n2.AddLast(9);
+n3 = LinkedListQuestions.addNumbers(n1, n2);
+if (String.Join(",", n3.ToArray()) != "8,9,9,1") Console.WriteLine("FAIL!");
 
 
 Console.WriteLine("Question 5b");
@@ -138,7 +154,18 @@ n2.AddLast(2);
 n2.AddLast(9);
 n2.AddLast(5);
 n3 = LinkedListQuestions.addNumbersReverseOrder(n1, n2);
-if (String.Join(",", n3.ToArray()) != "2,1,9") Console.WriteLine("FAIL!");
+if (String.Join(",", n3.ToArray()) != "9,1,2") Console.WriteLine("FAIL!");
+
+n1 = new LinkedList<int>();
+n1.AddLast(9);
+n1.AddLast(9);
+n1.AddLast(9);
+n2 = new LinkedList<int>();
+n2.AddLast(9);
+n2.AddLast(9);
+n2.AddLast(9);
+n3 = LinkedListQuestions.addNumbersReverseOrder(n1, n2);
+if (String.Join(",", n3.ToArray()) != "1,9,9,8") Console.WriteLine("FAIL!");
 
 Console.WriteLine("Question 6");
 testSLI = produceSinglyLinkedList();
@@ -179,6 +206,7 @@ Console.WriteLine("Chapter 8 - Object-Oriented Design");
 
 // TODO - Refactor Chapter 2. Q2 to use run1node & run2node. Q3 MUST use singlyLinkedList
 // TODO - Put simple CRUD app into seperate github repo
+// TODO - Respond to open source feedback
 // TODO - Chapter 8.
 
 
