@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CrackingTheCodingInterview
 {
     // Chapter 1 - Arrays & Strings
-    public static class ArraysAndStrings
+    public static class Chap1ArraysAndStrings
     {
 
         // Question 1 - Implement an algorithm to determine if a string has all unique characters.

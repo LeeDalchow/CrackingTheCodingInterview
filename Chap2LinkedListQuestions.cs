@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CrackingTheCodingInterview
 {
-    public static class LinkedListQuestions
+    public static class Chap2LinkedListQuestions
     {
 
         /*
