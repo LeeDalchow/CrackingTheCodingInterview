@@ -15,7 +15,7 @@ namespace CrackingTheCodingInterview.Chapter_8___Object_Oriented_Design.Q1
         { // Pre-generate pack of 52 cards
             foreach(PlayingCard.suitType curType in Enum.GetValues(typeof(PlayingCard.suitType))) // for each suit
             {
-                foreach (PlayingCard.cardValue curValue in Enum.GetValues(typeof(PlayingCard.cardValue)))
+                foreach (PlayingCard.cardValue curValue in Enum.GetValues(typeof(PlayingCard.cardValue))) // For each value
                 {
                     _activeDeck.AddLast(new BlackJackCard(curType, curValue));
                 }
