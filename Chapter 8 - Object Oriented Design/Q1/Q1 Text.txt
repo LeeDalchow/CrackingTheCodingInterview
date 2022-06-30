@@ -1,0 +1,7 @@
+﻿Design the data structures for a generic deck of cards. Explain how you would subclass the data structures to implement blackjack.
+
+See: PlayingCard.cs (Abstract Class for generic playing cards)
+BlackJackCard.cs - an individual blackjack card
+BlackJackDeck.cs - The deck of blackjack cards.
+
+The next thing to implement would be hands of the dealer, and the players using a "BlackJackHands" class.
